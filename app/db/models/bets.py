@@ -15,4 +15,3 @@ class Bets(Base):
     bet_sum = Column(Float)
     status = Column(String)
     created_at = Column(DateTime)
-    updated_at = Column(DateTime)
