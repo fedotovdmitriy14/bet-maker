@@ -33,7 +33,7 @@ class AsyncSearchService(AsyncSearchEngine):
         except exc.IntegrityError:
             raise CustomException(
                 code=409,
-                message=f'Could not save',
+                message='Could not save',
             )
         await self.db.refresh(item)
         return item

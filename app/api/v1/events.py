@@ -1,8 +1,8 @@
-from typing import List, Dict
+from typing import Dict
 
 from fastapi import APIRouter, Depends, Path
 
-from app.schemas.bets import Bet, ResultStatus
+from app.schemas.bets import ResultStatus
 from app.services.async_search_service import AsyncSearchService, get_search_service
 
 router = APIRouter()
