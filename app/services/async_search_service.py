@@ -5,10 +5,12 @@ from functools import lru_cache
 from typing import Type
 
 from fastapi import Depends
-from sqlalchemy import exc, select
+from sqlalchemy import exc, select, update
 from sqlalchemy.orm import DeclarativeMeta
 
 from app.db.engine import Session, get_db
+from app.db.models.bets import Statuses, Bets
+from app.schemas.bets import ResultStatus
 from app.services import AsyncSearchEngine
 from app.services.helpers import CustomException
 
@@ -36,15 +38,26 @@ class AsyncSearchService(AsyncSearchEngine):
         await self.db.refresh(item)
         return item
 
-    async def update(self):
+    async def update_bets_status(self, event_id: int, status: str):
         """Обновить запись."""
-        pass
+        if status == ResultStatus.WIN:
+            stmt = (
+                update(Bets)
+                .where(Bets.event_id == event_id)
+                .values(status=Statuses.win)
+            )
+        elif status == ResultStatus.LOSE:
+            stmt = (
+                update(Bets)
+                .where(Bets.event_id == event_id)
+                .values(status=Statuses.lose)
+            )
+        await self.db.execute(stmt)
+        await self.db.commit()
 
     async def get_all(self, model: Type[DeclarativeMeta], page_size: int, page: int):
         """Получить все записи из бд."""
         query = select(model).limit(page_size).offset((page - 1) * page_size)
-        # if getattr(model, 'created_at'):
-        #     query = select(model).order_by(model.created_at).limit(page_size).offset((page - 1) * page_size)
         result = await self.db.execute(query)
         bets = result.scalars().all()
         return bets

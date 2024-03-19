@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel
 from uuid import UUID
@@ -22,3 +23,8 @@ class Bet(BetId, BetPost):
     created_at: datetime
     bet_sum: float
     status: Statuses
+
+
+class ResultStatus(str, Enum):
+    WIN = "WIN"
+    LOSE = "LOSE"
