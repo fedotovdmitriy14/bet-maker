@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from functools import lru_cache
 from typing import Type
@@ -23,7 +24,7 @@ class AsyncSearchService(AsyncSearchEngine):
     async def save(self, data, model: Type[DeclarativeMeta]):
         """Сохранить новую запись."""
 
-        item = model(**data.dict())
+        item = model(**data.dict() | {'created_at': datetime.now()})
         self.db.add(item)
         try:
             await self.db.commit()
