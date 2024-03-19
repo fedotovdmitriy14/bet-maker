@@ -5,7 +5,7 @@ from functools import lru_cache
 from typing import Type
 
 from fastapi import Depends
-from sqlalchemy import exc
+from sqlalchemy import exc, select
 from sqlalchemy.orm import DeclarativeMeta
 
 from app.db.engine import Session, get_db
@@ -40,9 +40,14 @@ class AsyncSearchService(AsyncSearchEngine):
         """Обновить запись."""
         pass
 
-    def get_all(self):
+    async def get_all(self, model: Type[DeclarativeMeta], page_size: int, page: int):
         """Получить все записи из бд."""
-        pass
+        query = select(model).limit(page_size).offset((page - 1) * page_size)
+        # if getattr(model, 'created_at'):
+        #     query = select(model).order_by(model.created_at).limit(page_size).offset((page - 1) * page_size)
+        result = await self.db.execute(query)
+        bets = result.scalars().all()
+        return bets
 
 
 @lru_cache()
