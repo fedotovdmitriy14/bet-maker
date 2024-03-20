@@ -1,12 +1,8 @@
-import os
-import sys
 from datetime import datetime
 
 from sqlalchemy import delete
 
 from app.db.models.bets import Bets, Statuses
-
-# sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 
 async def set_up_bets_fixture(session):
