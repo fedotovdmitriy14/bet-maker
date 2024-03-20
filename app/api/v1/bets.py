@@ -11,6 +11,7 @@ router = APIRouter()
 
 @router.post(
     '/',
+    status_code=201,
     response_model=BetId,
 )
 async def post_new_bet(
