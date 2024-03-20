@@ -4,5 +4,6 @@ def test_make_new_bet(client):
         json={
             "event_id": 1511,
             "bet_sum": 1511
-    })
-    assert response.status_code == 200
+        }
+    )
+    assert response.status_code == 201
