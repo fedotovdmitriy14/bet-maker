@@ -9,3 +9,4 @@ greenlet==3.0.3
 sqlalchemy[asyncio]
 psycopg2-binary
 pytest==8.1.1
+httpx
