@@ -7,3 +7,11 @@ def test_make_new_bet(client):
         }
     )
     assert response.status_code == 201
+
+
+def test_get_all_bets(client, set_up_and_tear_down_bets):
+    response = client.post(
+        f'api/v1/bets',
+    )
+    assert response.status_code == 200
+    assert len(response.json()) == 5
